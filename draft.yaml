@@ -1,0 +1,92 @@
+models:
+  user:
+    f_name: string
+    l_name: string
+    email: email unique
+    password: string
+    
+
+  client:
+    user_id: id foreign:user.id
+    address: string
+    phone_no: biginteger
+    timestamps: false
+    relationships:
+      hasMany: book
+
+  brand:
+    name: string:40
+    logo: text
+    timestamps: false
+
+  category:
+    name: string:40
+    description: text
+    timestamps: false  
+
+  vehicle:
+    modal: string
+    brand_id: id foreign:brand.id
+    category: id foreign:category.id
+    weekly_fee: double:8,2
+    daily_fee: double:8,2
+    status: boolean default:0
+    timestamps: false
+    
+  vehicleDetail:
+    vehicle_id: id foreign:vehicle.id
+    baggageSpace_id: id foreign:baggageSpace.id    
+    transmission: text
+    capacity: integer
+    timestamps: false
+
+
+  baggageSpace:
+    vehicleDetails_id: id foreign:vehicleDetails.id
+    large: integer default:0
+    medium: integer default:0
+    small: integer default:0
+    timestamps: false
+
+  feature:
+    name: string
+    timestamps: false
+  
+  vehicleFeature:
+    feature_id: id foreign:feature.id
+    vehicle_id: id foreign:vehicle.id
+    timestamps: false
+    relationships:
+      hasMany: vehicleDetail, feature
+
+  addon:
+    name: string
+    description: text
+    price: double:8,2
+    amount: integer default:0
+    timestamps: false
+    relationships:
+      hasMany: book
+
+
+  book:
+    client_id: id foreign:client.id
+    vehicle_id: id foreign:vehicle.id
+    pickup_location: text
+    pickup_date: date useCurrent
+    dropoff_location: text
+    dropoff_date: date useCurrent
+    timestamps: false
+    relationships:
+      hasMany: client
+
+
+  bookAddon:
+    book_id: id foreign:book.id
+    addon_id: id foreign:addon.id
+    timestamps: false
+    relationships:
+      hasMany: book
+
+
+seeders: user, client, brand, category, vehicle, feature, addon
